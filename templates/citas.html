@@ -1,4 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="row justify-content-center ">
+    <div class=" col-md-10">
+        <table class="table table-sm table-dark">
+        
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">IdTrabajador</th>
+                <th scope="col">IdCliente</th>
+                <th scope="col">Descripcion Trabajo</th>
+                <th scope="col">Finalizada</th>
+                <th scope="col">Confirmacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in allcitas %}
+            <tr>
+                <th scope="row">{{ x['idCitas'] }}</th>
+                <td>{{ x['Fecha'] }}</td>
+                <td>{{ x['Hora'] }}</td>
+                <td>{{ x['Trabajador'] }}</td>
+                <td>{{ x['Cliente'] }}</td>
+                <td>{{ x['DescripcionTrabajo'] }}</td>
+                <td>{{ x['Finalizada'] }}</td>
+                <td>{{ x['Confirmacion'] }}</td>
+                <td>
+                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                </td>
+            </tr>
+            {% endfor %}
+          
+      </table>
+    </div>
+</div>
+<br><br>
 
 {% endblock %}

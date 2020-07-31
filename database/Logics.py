@@ -584,7 +584,58 @@ class adminCitas(DatabaseZ):
         CitasCliente= self.creardiccsCitasClientes(data)
         CitasClienteTipos = self.clasificarcitasCliente(CitasCliente)
         return CitasClienteTipos
+    
+    def getAllCitas(self):
+        """Retorna una lista de diccionarios con los datos de las citas"""
+        database = self.database
+        sql = f"""SELECT * FROM hermes.citas;"""
+        data = database.executeQuery(sql)
+        allcitas = self.creardiccsAllCitas(data)
+        return allcitas
+    
+    def deleteCita(self,idCita):
+        """Elimina una Cita"""
+        database = self.database
+        sql = f"""DELETE FROM hermes.citas WHERE idCitas= {idCita};"""
+        data = database.executeQuery(sql)
+        return data
 
+    def updateCitas(self, datanueva):
+        """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """UPDATE hermes.citas SET
+            Fecha=%s , Hora=%s, Trabajador=%s, Cliente=%s, Finalizada=%s, DescripcionTrabajo=%s ,
+            Confirmacion=%s WHERE idCitas=%s;"""
+        val = (
+            datanueva['Fecha'],
+             datanueva['Hora'],
+             datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion'],
+            datanueva['idCitas']
+            )
+        success = database.executeMany(sql)
+        return success
+
+    def creardiccsAllCitas(self, lista):
+        """Crea una lista de diccionarios de todas las citas"""
+        listafinal=[]
+        if lista is not None:
+            for x in lista:
+                dicc = {
+                    "idCitas": x[0],
+                    "Fecha": x[1],
+                    "Hora": x[2],
+                    "Trabajador":x[3],
+                    "Cliente":x[4],
+                    "Finalizada":x[5],
+                    "DescripcionTrabajo":x[6],
+                    "Confirmacion":x[7],
+                }
+                listafinal.append(dicc)
+        return listafinal
     def creardiccsCitasClientes(self, lista):
         """Crea una lista de diccionarios de las citas del cliente"""
         listafinal=[]
