@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" type="image/x-icon" href="data:;base64,{{ imagenes['icono'] }}" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <title>Hammer - Registro</title>
+        <style>
+            .cartbox div{
+                float:left;
+            }
+            .valid {
+                background-color: green;
+            }
+            .invalid {
+                background-color: red;
+            }
+
+        </style>     
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <div class="jumbotron jumbotron-fluid text-white" style="height: 150px; background-color: black;">
+            <div style="text-align: center; top: 50%;">
+                <h1><a href="/"><img src="data:;base64,{{ imagenes['logo'] }}" width="128" height="128"></a>Hammer</h1>
+            </div>
+        </div>
+        <br><br><br>
+
+        {% block formulario %}
+        {% endblock %}
+        
+        <footer class="page-footer font-small pt-4 text-white" style="background-color: black;">
+            <div class="container text-center text-md-left">
+                <div class="row">
+                    <div class="col-md-4 mx-auto">
+                        <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="40" height="40" HSPACE="10" >HAMMER</h1>
+                        <h3>La solución en tus manos</h3>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-3 mx-auto">
+                        <h1>Servicios en:</h1>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Fontanería</a></label>
+                        </div>
+        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Electricidad</a></label>
+                        </div>
+                        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Jardinería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Albañilería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Mantenimiento</a></label>
+                        </div>
+        
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-2 mx-auto">
+                        <h1>Contáctanos</h1>
+                        <div class="row1">
+                            <label>Número de teléfono</label>
+                            <br>
+                            <a href="tel:+503 1234-5678"><p>+503 1234-5678</p></a>
+                        </div>
+                    
+                        <div class="row1">
+                            <label>Correo Electrónico</label>
+                            <br>
+                            <a href="mailto:hammer.info@gmail.com"><p>hammer.info@gmail.com</p></a>
+                        </div>
+            
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                </div>
+            </div>
+            <div class="footer-copyright text-center py-3">HAMMER 2020 | Design by Hermes</div>
+        </footer>
+    </body>
+</html>
