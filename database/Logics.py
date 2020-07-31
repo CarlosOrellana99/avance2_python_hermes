@@ -603,10 +603,9 @@ class adminCitas(DatabaseZ):
     def insertCita(self, datanueva):
         """Agrega una citas y returna True si se realiza correctamente"""
         database = self.database
-        sql = """INSERT INTO hermes.citas (`idCitas`, `Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
-                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        sql = """INSERT INTO hermes.citas (`Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
+                 VALUES ( %s, %s, %s, %s, %s, %s, %s);"""
         val = (
-            datanueva['idCitas'],
             datanueva['Fecha'],
             datanueva['Hora'],
             datanueva['Trabajador'],
