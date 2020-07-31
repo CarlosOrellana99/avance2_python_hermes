@@ -14,6 +14,7 @@ def index():
 @app.route("/tablas/<lugar>")
 def tablas(lugar): 
     admin = adminAdministrador()
+    administradorCitas= adminCitas()
     images = admin.getImages()
 
     if lugar == "administradores":
@@ -28,7 +29,8 @@ def tablas(lugar):
     elif lugar == "membresias":
         return render_template('membresias.html', imagenes = images)
     elif lugar == "citas":
-        return render_template('citas.html', imagenes = images)
+        citas = administradorCitas.getAllCitas()
+        return render_template('citas.html', allcitas=citas , imagenes = images)
 
 # Edits
 @app.route("/edit/administrador/<correo>")
