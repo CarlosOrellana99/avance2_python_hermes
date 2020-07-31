@@ -19,7 +19,7 @@
 
         </style>     
     </head>
-    <body>
+    <body >
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
         </div>
         <br><br><br>
 
-        {% block formulario %}
-        {% endblock %}
+        <div style="margin: 10px; min-height: 450px;">
+            {% block content %}
+            {% endblock %}
+        </div>
         
-        <footer class="page-footer font-small pt-4 text-white" style="background-color: black;">
+        <footer class="page-footer font-small text-white" style="background-color: black;clear: both;">
             <div class="container text-center text-md-left">
                 <div class="row">
                     <div class="col-md-4 mx-auto">
@@ -83,5 +85,6 @@
             </div>
             <div class="footer-copyright text-center py-3">HAMMER 2020 | Design by Hermes</div>
         </footer>
+        
     </body>
 </html>

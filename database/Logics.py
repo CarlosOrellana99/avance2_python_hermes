@@ -64,6 +64,19 @@ class adminAdministrador(DatabaseZ):
             lista = self.convertTuplaToList(data[0], picture)
         return lista
 
+    def getAllAdmins(self):
+        """Debuele una lista de diccionarios con todos los administradores"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.administradoes;"
+        data = database.executeQuery(sql)
+        lista = {}
+        final = []
+        if len(data) > 0:
+            for x in data:
+                lista = self.convertTuplaToList(x, True)
+                final.append(lista)
+        return final
+
     def checkContra(self, contra, lista):
         valor = contra == lista["contra"]
         return valor

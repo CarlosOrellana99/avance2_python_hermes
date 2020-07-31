@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center ">
+    <div class=" col-md-10">
+        <table class="table table-sm table-dark">
+        
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Contraseña</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in administradores %}
+            <tr>
+                <th scope="row">{{ x['id'] }}</th>
+                <td>{{ x['nombre'] }}</td>
+                <td>{{ x['apellido'] }}</td>
+                <td>{{ x['correo'] }}</td>
+                <td>{{ x['contra'] }}</td>
+                <td><img src="data:;base64,{{ x['foto'] }}" alt="" border=3 height=50 width=50></img></td>
+                <td>
+                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                </td>
+            </tr>
+            {% endfor %}
+          
+      </table>
+    </div>
+</div>
+<br><br>
+
+{% endblock %}
