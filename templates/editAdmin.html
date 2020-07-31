@@ -2,10 +2,55 @@
 {% block content %}
 <div class="row justify-content-center ">
     <div class=" col-md-10">
-        <form action="/servlet/admin/" method="POST">
-            
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/admin/updateWD" method="POST" enctype="multipart/form-data">
+            <br>
+            <div class="form-title">
+                <h2>Insertar un nuevo registro</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{administrador['nombre']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" name="apellido" id="apellido" value="{{administrador['apellido']}}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="correo">Email</label>
+                    <input type="email" class="form-control" id="correo" name="correo" value="{{administrador['correo']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="password">Password</label>
+                    <input type="text" class="form-control" id="password" name="password" value="{{administrador['contra']}}" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-info">Cambiar datos</button>
+            <input type="hidden" id="id" name="id" value="{{ administrador['id'] }}"></input>
+        </form>
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/admin/updateWP" method="POST" enctype="multipart/form-data">
+            <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01" required>
+                    <label class="custom-file-label" for="imagen">Elija un archivo</label>
+                </div>
+            </div>
+            <script type="application/javascript">
+                $('input[type="file"]').change(function(e){
+                    var fileName = e.target.files[0].name;
+                    $('.custom-file-label').html(fileName);
+                });
+            </script>
+            <button type="submit" class="btn btn-info">Cambiar Foto</button>
+            <br><br>
+            <input type="hidden" id="id" name="id" value="{{ administrador['id'] }}"></input>
         </form>
     </div>
 </div>
-
 {% endblock %}

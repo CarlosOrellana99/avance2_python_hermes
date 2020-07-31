@@ -54,10 +54,47 @@ class adminAdministrador(DatabaseZ):
         }
         return conclusion
 
+    def insertAdmin(self, nombre, apellido, correo, contra, foto):
+        sql = """INSERT INTO `hermes`.`administradoes` (`Nombre`, `Apellido`, `Correo`, `Contrasena`, `foto`) VALUES (%s, %s, %s, %s, %s);"""
+        val = (nombre, apellido, correo, contra, foto)
+        database = self.database
+        success = database.executeMany(sql, val)
+        return success
+
+    def updateAdmin(self, idup, nombre, apellido, correo, contra):
+        sql = f"""UPDATE `hermes`.`administradoes` SET `Nombre` = %s, `Apellido` = %s, `Correo` = %s, `Contrasena` = %s WHERE (`idAdministradoes` = '{idup}');"""
+        val = (nombre, apellido, correo, contra)
+        database = self.database
+        success = database.executeMany(sql, val)
+        return success
+
+    def updateAdminPicture(self, idup, foto):
+        sql = f"""UPDATE `hermes`.`administradoes` SET `foto` = %s WHERE (`idAdministradoes` = '{idup}');"""
+        
+        database = self.database
+        success = database.executeMany(sql, foto)
+        return success
+
+    def deleteAdmin(self, idDel):
+        sql = f"DELETE FROM `hermes`.`administradoes` WHERE (`idAdministradoes` = '{idDel}');"
+        database = self.database
+        success = database.executeNonQueryBool(sql)
+        return success
+
     def getAdminByCorreo(self, correo, picture = True):
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
         sql = f"SELECT * FROM hermes.administradoes where administradoes.Correo = '{correo}' limit 1;"
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToList(data[0], picture)
+        return lista
+    
+    def getAdminById(self, idAdmin, picture = True):
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.administradoes where administradoes.idAdministradoes = '{idAdmin}' limit 1;"
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
