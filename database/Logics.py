@@ -600,6 +600,24 @@ class adminCitas(DatabaseZ):
         data = database.executeQuery(sql)
         return data
 
+    def insertCita(self, datanueva):
+        """Agrega una citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """INSERT INTO hermes.citas (`idCitas`, `Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
+                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        val = (
+            datanueva['idCitas'],
+            datanueva['Fecha'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion']
+            )
+        success = database.executeMany(sql,val)
+        return success
+
     def updateCitas(self, datanueva):
         """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
         database = self.database
@@ -608,15 +626,15 @@ class adminCitas(DatabaseZ):
             Confirmacion=%s WHERE idCitas=%s;"""
         val = (
             datanueva['Fecha'],
-             datanueva['Hora'],
-             datanueva['Trabajador'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
             datanueva['Cliente'],
             datanueva['Finalizada'],
             datanueva['DescripcionTrabajo'],
             datanueva['Confirmacion'],
             datanueva['idCitas']
             )
-        success = database.executeMany(sql)
+        success = database.executeMany(sql,val)
         return success
 
     def creardiccsAllCitas(self, lista):
