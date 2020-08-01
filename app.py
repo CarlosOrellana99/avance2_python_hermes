@@ -87,10 +87,10 @@ def editClientes(tipo):
         contra = request.form.get('password')
         imagen = request.files['imagen']
         foto = imagen.read()
-        departamento = request.form.get('departamento')
-        municipio = request.form.get('municipio')
+        departamento = int(request.form.get('departamento'))
+        municipio = int(request.form.get('municipio'))
         genero = request.form.get('genero')
-        adminC.insert(dui, nombre, apellido, celular, direccion, correo, contra, int(departamento), int(municipio), genero, foto)
+        adminC.insert(dui, nombre, apellido, celular, direccion, correo, contra, departamento, municipio, genero, foto)
         return redirect("/tablas/clientes")
     elif tipo == "delete":
         idDel = request.args.get('id')

@@ -241,7 +241,7 @@ class adminClientes(DatabaseZ):
         else:
             sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
