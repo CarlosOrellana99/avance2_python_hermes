@@ -71,7 +71,6 @@ def editAdmin(tipo):
         foto = picture.read()
         admin.updateAdminPicture(idup, foto)
         return redirect("/tablas/administradores")
-
     else:
         return redirect("/")
 
