@@ -241,7 +241,7 @@ class adminClientes(DatabaseZ):
         else:
             sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
@@ -260,6 +260,42 @@ class adminClientes(DatabaseZ):
         lista = {}
         if len(data) > 0:
             lista = self.convertTuplaToList(data[0],picture)
+        return lista
+
+    def getAllClientes(self):
+            """Debuele una lista de diccionarios con todos los clientes"""
+            database = self.database
+            sql = f"SELECT * FROM hermes.clientes;"
+            data = database.executeQuery(sql)
+            lista = {}
+            final = []
+            if len(data) > 0:
+                for x in data:
+                    lista = self.convertTuplaToDicc(x, True)
+                    final.append(lista)
+            return final
+
+    def convertTuplaToDicc(self, tupla, picture = True):
+        if picture:
+            foto = b64encode(tupla[8]).decode("utf-8")
+        else:
+            foto = None
+
+        if tupla is not None:
+            lista = {
+                "id": tupla[0],
+                "dui": tupla[1],
+                "nombre": tupla[2],
+                "apellido": tupla[3],
+                "telefono": tupla[4],
+                "direccion": tupla[5],
+                "correo": tupla[6],
+                "contra": tupla[7],
+                "foto": foto,
+                "genero": tupla[11],
+                "departamento": tupla[9],
+                "municipio": tupla[10],
+            }
         return lista
 
     def convertTuplaToList(self, tupla, picture = True):

@@ -21,7 +21,9 @@ def tablas(lugar):
         administradores = admin.getAllAdmins()
         return render_template('administradores.html', imagenes = images, administradores = administradores)
     elif lugar == "clientes":
-        return render_template('clientes.html', imagenes = images)
+        adminC = adminClientes()
+        clientes = adminC.getAllClientes()
+        return render_template('clientes.html', imagenes = images, clientes = clientes)
     elif lugar == "trabajadores":
         return render_template('trabajadores.html', imagenes = images)
     elif lugar == "tarjetas":
@@ -34,13 +36,6 @@ def tablas(lugar):
         return render_template('citas.html', allcitas=citas , imagenes = images , idClientes = idClientes, idTrabajadores= idTrabajadores)
 
 # Edits
-@app.route("/edit/administrador/<correo>")
-def edit(correo):
-    admin = adminAdministrador()
-    images = admin.getImages()
-    administrador = admin.getAdminByCorreo("correo")
-    return render_template('editAdmin.html', imagenes = images, administrador = administrador)
-    
 @app.route("/servlet/admin/<tipo>", methods=['POST', 'GET'])
 def editAdmin(tipo):
     admin = adminAdministrador()
@@ -53,6 +48,51 @@ def editAdmin(tipo):
         foto = imagen.read()
         admin.insertAdmin(nombre, apellido, correo, contra, foto)
         return redirect("/tablas/administradores")
+    elif tipo == "delete":
+        idDel = request.args.get('id')
+        print(idDel)
+        admin.deleteAdmin(idDel)
+        return redirect("/tablas/administradores")
+    elif tipo == "update":
+        idUp = request.args.get('id')
+        administrador = admin.getAdminById(idUp)
+        imagenes = admin.getImages()
+        return render_template("editAdmin.html", administrador = administrador, imagenes = imagenes)
+    elif tipo == "updateWD":
+        idup = request.form.get('id')
+        nombre = request.form.get('nombre')
+        apellido = request.form.get('apellido')
+        correo = request.form.get('correo')
+        contra = request.form.get('password')
+        admin.updateAdmin(idup, nombre, apellido, correo, contra)
+        return redirect("/tablas/administradores")
+    elif tipo == "updateWP":
+        idup = request.form.get('id')
+        picture = request.files['imagen']
+        foto = picture.read()
+        admin.updateAdminPicture(idup, foto)
+        return redirect("/tablas/administradores")
+    else:
+        return redirect("/")
+
+@app.route("/servlet/clientes/<tipo>", methods=['POST', 'GET'])
+def editClientes(tipo):
+    adminC = adminClientes()
+    if tipo == "register":
+        dui = request.form.get('dui')
+        nombre = request.form.get('nombre')
+        apellido = request.form.get('apellido')
+        celular = request.form.get('celular')
+        direccion = request.form.get('direccion')
+        correo = request.form.get('correo')
+        contra = request.form.get('password')
+        imagen = request.files['imagen']
+        foto = imagen.read()
+        departamento = int(request.form.get('departamento'))
+        municipio = int(request.form.get('municipio'))
+        genero = request.form.get('genero')
+        adminC.insert(dui, nombre, apellido, celular, direccion, correo, contra, departamento, municipio, genero, foto)
+        return redirect("/tablas/clientes")
     elif tipo == "delete":
         idDel = request.args.get('id')
         print(idDel)
