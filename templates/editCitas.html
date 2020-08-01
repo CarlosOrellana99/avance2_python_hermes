@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center ">
+    <div class=" col-md-10">
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/citas/updater" method="POST" enctype="multipart/form-data">
+            <br>
+            <div class="form-title">
+                <h2>Actualizar registro</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Fecha">Fecha</label>
+                    <input type="text" class="form-control" id="Fecha" name="Fecha" value ="{{lacita['Fecha']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Hora">Hora</label>
+                    <input type="text" class="form-control" name="Hora" id="Hora" value ="{{lacita['Hora']}}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Trabajador">IdTrabajador</label>
+                    <select name="IdTrabajador" id="IdTrabajador">
+                    {% for idst in idTrabajadores %}
+                        {% if idst[0] == lacita['Trabajador'] %}
+                        <option value="{{idst[0]}}" selected>{{idst[0]}}</option>
+                        {% else%}
+                        <option value="{{idst[0]}}">{{idst[0]}}</option>
+                        {% endif%}
+                    {% endfor %}
+                    </select>
+                </div>
+    
+                <div class="form-group col-md-6">
+                    <label for="Cliente">IdCliente</label>
+                    <select name="IdCliente" id="IdCliente">
+                        {% for idsc in idClientes %}
+                            {% if idsc[0] == lacita['Cliente'] %}
+                                <option value="{{idsc[0]}}" selected>{{idsc[0]}}</option>
+                            {% else%}
+                                <option value="{{idsc[0]}}">{{idsc[0]}}</option>
+                            {% endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Descripcion">Descripcion Trabajo</label>
+                    <input type="text" class="form-control" id="DescripcionTrabajo" name="DescripcionTrabajo" value ="{{lacita['DescripcionTrabajo']}}"required>
+                </div>
+            </div>  
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Confirmacion">Confirmacion</label>
+                    <select name="Confirmacion" id="Confirmacion">
+                        {% if lacita['Confirmacion']=="True" %}
+                            <option value="True" selected>True</option>
+                            <option value="False">False</option>
+                        {% else%}
+                            <option value="True" >True</option>
+                            <option value="False"selected>False</option>
+                        {% endif%}
+                      </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Finalizada">Finalizada</label>
+                    <select name="Finalizada" id="Finalizada">
+                        {% if lacita['Finalizada']=="True" %}
+                            <option value="True" selected>True</option>
+                            <option value="False">False</option>
+                        {% else%}
+                            <option value="True" >True</option>
+                            <option value="False"selected>False</option>
+                        {% endif%}
+                      </select>
+                </div>
+            </div>    
+            <button type="submit" class="btn btn-info">Actualizar</button>
+            <br><br>
+            <input type="hidden" id="id" name="id" value="{{ lacita['idCitas'] }}"></input>
+        </form>
+    </div>
+</div>
+{% endblock %}

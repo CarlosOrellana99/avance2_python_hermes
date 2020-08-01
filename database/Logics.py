@@ -622,20 +622,50 @@ class adminCitas(DatabaseZ):
         CitasClienteTipos = self.clasificarcitasCliente(CitasCliente)
         return CitasClienteTipos
     
+    def getidTrabajadoresClientesExistentes(self):
+        """Retorna dos listas con los id de los trabajadores y clientes existentes"""
+        database = self.database
+        sql1 = "SELECT idTrabajadores FROM hermes.trabajadores;"
+        idTrabajadoresExistentes = database.executeQuery(sql1)
+
+        sql2 = f"""SELECT idClientes FROM hermes.clientes;"""
+        idClientesExistentes = database.executeQuery(sql2)
+
+        return idTrabajadoresExistentes,idClientesExistentes
+
     def getAllCitas(self):
         """Retorna una lista de diccionarios con los datos de las citas"""
         database = self.database
-        sql = f"""SELECT * FROM hermes.citas;"""
+        sql = "SELECT * FROM hermes.citas;"
         data = database.executeQuery(sql)
         allcitas = self.creardiccsAllCitas(data)
         return allcitas
     
+    def getCitaById(self,idCita):
+        """Busca una cita por su id y la regersa como diccionario"""
+        database = self.database
+        sql = f"""SELECT * FROM hermes.citas WHERE idCitas = '{idCita}';"""
+        data = database.executeQuery(sql)
+        citaBuscada ={}
+        for x in data:
+            citaBuscada = {
+                    "idCitas": x[0],
+                    "Fecha": x[1],
+                    "Hora": x[2],
+                    "Trabajador":x[3],
+                    "Cliente":x[4],
+                    "Finalizada":x[5],
+                    "DescripcionTrabajo":x[6],
+                    "Confirmacion":x[7],
+                        }
+        return citaBuscada
+    
     def deleteCita(self,idCita):
         """Elimina una Cita"""
         database = self.database
-        sql = f"""DELETE FROM hermes.citas WHERE idCitas= {idCita};"""
-        data = database.executeQuery(sql)
-        return data
+        sql = f"DELETE FROM `hermes`.`citas` WHERE (`idCitas` = {idCita});"
+        success = database.executeNonQueryBool(sql)
+        return success
 
     def insertCita(self, datanueva):
         """Agrega una citas y returna True si se realiza correctamente"""

@@ -30,7 +30,8 @@ def tablas(lugar):
         return render_template('membresias.html', imagenes = images)
     elif lugar == "citas":
         citas = administradorCitas.getAllCitas()
-        return render_template('citas.html', allcitas=citas , imagenes = images)
+        idTrabajadores,idClientes = administradorCitas.getidTrabajadoresClientesExistentes()
+        return render_template('citas.html', allcitas=citas , imagenes = images , idClientes = idClientes, idTrabajadores= idTrabajadores)
 
 # Edits
 @app.route("/edit/administrador/<correo>")
@@ -79,6 +80,53 @@ def editAdmin(tipo):
 
     else:
         return redirect("/")
+
+@app.route("/servlet/citas/<tipo>", methods=['POST', 'GET'])
+def editCitas(tipo):
+    administrarCitas = adminCitas()
+    admin = adminAdministrador()
+    images = admin.getImages()
+
+    if tipo == "register":
+        data = {
+            "Fecha": request.form.get('Fecha'),
+            "Hora": request.form.get('Hora'),
+            "Trabajador": int(request.form.get('IdTrabajador')),
+            "Cliente": int(request.form.get('IdCliente')),
+            "Hora": request.form.get('Hora'),
+            "DescripcionTrabajo": request.form.get('DescripcionTrabajo'),
+            "Confirmacion": request.form.get('Confirmacion'),
+            "Finalizada": request.form.get('Finalizada')
+            }
+        success = administrarCitas.insertCita(data)
+        return redirect("/tablas/citas")
+
+    elif tipo == "delete":
+        idDel = int(request.args.get('id'))
+        delete = administrarCitas.deleteCita(idDel)
+        return redirect("/tablas/citas")
+    
+    elif tipo == "update":
+        idUpdt = int(request.args.get('id'))
+        citaRegistro = administrarCitas.getCitaById(idUpdt)
+        idTrabajadores,idClientes = administrarCitas.getidTrabajadoresClientesExistentes()
+        print(citaRegistro)
+        return render_template("editCitas.html", lacita = citaRegistro, imagenes = images , idClientes = idClientes, idTrabajadores= idTrabajadores)
+    
+    elif tipo=="updater":
+        data = {
+            "idCitas":request.form.get('id'),
+            "Fecha": request.form.get('Fecha'),
+            "Hora": request.form.get('Hora'),
+            "Trabajador": int(request.form.get('IdTrabajador')),
+            "Cliente": int(request.form.get('IdCliente')),
+            "Hora": request.form.get('Hora'),
+            "DescripcionTrabajo": request.form.get('DescripcionTrabajo'),
+            "Confirmacion": request.form.get('Confirmacion'),
+            "Finalizada": request.form.get('Finalizada')
+            }
+        update = administrarCitas.updateCitas(data)
+        return redirect("/tablas/citas")
 
 if __name__=='__main__':
     app.run(debug=True)

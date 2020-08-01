@@ -12,8 +12,9 @@
                 <th scope="col">IdTrabajador</th>
                 <th scope="col">IdCliente</th>
                 <th scope="col">Descripcion Trabajo</th>
-                <th scope="col">Finalizada</th>
                 <th scope="col">Confirmacion</th>
+                <th scope="col">Finalizada</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -25,18 +26,80 @@
                 <td>{{ x['Trabajador'] }}</td>
                 <td>{{ x['Cliente'] }}</td>
                 <td>{{ x['DescripcionTrabajo'] }}</td>
-                <td>{{ x['Finalizada'] }}</td>
                 <td>{{ x['Confirmacion'] }}</td>
+                <td>{{ x['Finalizada'] }}</td>
                 <td>
-                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
-                    <a href=""><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                    <a href="/servlet/citas/delete?id={{x['idCitas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                    <a href="/servlet/citas/update?id={{x['idCitas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
                 </td>
             </tr>
             {% endfor %}
           
       </table>
     </div>
+    <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/citas/register" method="POST" enctype="multipart/form-data">
+        <br>
+        <div class="form-title">
+            <h2>Insertar un nuevo registro</h2>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Fecha">Fecha</label>
+                <input type="text" class="form-control" id="Fecha" name="Fecha" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Hora">Hora</label>
+                <input type="text" class="form-control" name="Hora" id="Hora" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Trabajador">IdTrabajador</label>
+                <select name="IdTrabajador" id="IdTrabajador">
+                {% for idst in idTrabajadores %}
+                    <option value="{{idst[0]}}">{{idst[0]}}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="Cliente">IdCliente</label>
+                <select name="IdCliente" id="IdCliente">
+                    {% for idsc in idClientes %}
+                        <option value="{{idsc[0]}}">{{idsc[0]}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Descripcion">Descripcion Trabajo</label>
+                <input type="text" class="form-control" id="DescripcionTrabajo" name="DescripcionTrabajo" required>
+            </div>
+        </div>  
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Confirmacion">Confirmacion</label>
+                <select name="Confirmacion" id="Confirmacion">
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                  </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Finalizada">Finalizada</label>
+                <select name="Finalizada" id="Finalizada">
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                  </select>
+            </div>
+        </div>    
+        <button type="submit" class="btn btn-info">Registrar</button>
+        <br><br>
+        
+    </form>
+
 </div>
+
 <br><br>
 
 {% endblock %}
