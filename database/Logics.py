@@ -220,6 +220,8 @@ class adminAdministrador(DatabaseZ):
         }
         return dicc
 
+    
+
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -655,6 +657,49 @@ class adminTrabajadores(DatabaseZ):
                 lista = self.convertTuplaToList(x, True)
                 final.append(lista)
         return final
+
+    def getTrabajadorById(self, idTrabajador, picture = True):
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.trabajadores where trabajadores.idTrabajadores = '{idTrabajador}' limit 1;"
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToList(data[0], picture)
+        return lista
+    
+    def getImages(self):
+        sql = "SELECT * FROM hermes.imagenes;"
+        data = self.database.executeQuery(sql)
+        dicc = {
+            "logo": b64encode(data[0][1]).decode("utf-8"),
+            "pared": b64encode(data[1][1]).decode("utf-8"),
+            "icono": b64encode(data[2][1]).decode("utf-8"),
+            "logoYnombre": b64encode(data[3][1]).decode("utf-8")
+        }
+        return dicc
+
+    def deleteTrabajador(self, idDel):
+        sql = f"DELETE FROM `hermes`.`trabajadores` WHERE (`idTrabajadores` = '{idDel}');"
+        database = self.database
+        success = database.executeNonQueryBool(sql)
+        return success
+
+    
+    def updateTrabajador( self, dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada ):
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `DUI` = %s,`Nombre` = %s, `Apellido` = %s, `Celular` = %s, `Direccion` = %s,`Correo` = %s,`Contrasena` = %s,`Descripcion` = %s,`Departamento` = %s,`Municipio` = %s, `Genero` = %s,`Aceptado` = %s,`trabajos` = %s,`fechaDeEntrada` = %s WHERE (`idTrabajadores` = '{idup}');"""
+        val = (dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada)
+        database = self.database
+        success = database.executeMany(sql, val)
+        return success
+
+    def updateTrabajadorPicture(self, idup, foto):
+        sql = f"""UPDATE `hermes`.`Trabajadores` SET `foto` = %s WHERE (`idTrabajadores` = '{idup}');"""
+   
+        database = self.database
+        success = database.executeMany(sql, foto)
+        return success
+
 
 class adminCategorias(DatabaseZ):
     
