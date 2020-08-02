@@ -977,6 +977,28 @@ class adminMembresia(DatabaseZ):
             datanueva['UltimoPago']
         )
         success = database.executeMany(sql,val)
+        return success  
+
+    def getImages(self):
+        sql = "SELECT * FROM hermes.imagenes;"
+        data = self.database.executeQuery(sql)
+        dicc = {
+            "logo": b64encode(data[0][1]).decode("utf-8"),
+            "pared": b64encode(data[1][1]).decode("utf-8"),
+            "icono": b64encode(data[2][1]).decode("utf-8"),
+            "logoYnombre": b64encode(data[3][1]).decode("utf-8")
+        }
+        return dicc
+
+    def updateMembresia(self, idup, Membresia, Vigencia, UltimoPago):
+        sql = f"""UPDATE `hermes`.`membresias` 
+        SET `Membresia` = %s,
+         `Vigencia` = %s,
+          `UltimoPago` = %s
+           WHERE (`idMembresias` = '{idup}');"""
+        val = (Membresia, Vigencia, UltimoPago)
+        database = self.database
+        success = database.executeMany(sql, val)
         return success
 
 
@@ -987,7 +1009,7 @@ class adminMembresia(DatabaseZ):
                 "idMembresias": tupla[0],
                 "Membresia": tupla[1],
                 "Vigencia": tupla[2],
-                "Ultimopago": tupla[3],
+                "UltimoPago": tupla[3],
             }
         return lista
 

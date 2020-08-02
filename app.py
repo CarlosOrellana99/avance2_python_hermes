@@ -265,21 +265,24 @@ def editMembresia(tipo):
             "UltimoPago": request.form.get('UltimoPago')
             }
         success = administrarMembresias.insertMembresia(data)
-        return redirect("/tablas/Membresias")
+        return redirect("/tablas/membresias")
 
     elif tipo == "delete":
-        idDel = int(request.args.get('idMembresias'))
+        idDel = int(request.args.get('id'))
         delete = administrarMembresias.deleteMembresia(idDel)
         return redirect("/tablas/membresias")
     
     elif tipo=="update":
-        data = {
-            "idMembresias":request.form.get('idMembresias'),
-            "Membresia": request.form.get('Membresia'),
-            "Vigencia": request.form.get('Vigencia'),
-            "UltimoPago": request.form.get('UltimoPago')
-            }
-        update = administrarMembresias.updateMembresia(data)
+        idUp = request.args.get('id')
+        membresia = administrarMembresias.getMembresiaById(idUp)
+        images = administrarMembresias.getImages()
+        return render_template("editMembresia.html", membresia = membresia, imagenes = images)
+    elif tipo == "updateM":
+        idup = request.form.get('id')
+        Membresia = request.form.get('Membresia')
+        Vigencia = request.form.get('Vigencia')
+        UltimoPago = request.form.get('UltimoPago')
+        administrarMembresias.updateMembresia(idup, Membresia, Vigencia, UltimoPago)
         return redirect("/tablas/membresias")
 
 @app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])

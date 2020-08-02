@@ -11,6 +11,7 @@
                 <th scope="col">Membresía</th>
                 <th scope="col">Vigencia</th>
                 <th scope="col">FechaPago</th>
+                <th scope="col">Acciones</th>
 
             </tr>
         </thead>
@@ -21,13 +22,17 @@
                 <td>{{ x['Membresia'] }}</td>
                 <td>{{ x['Vigencia'] }}</td>
                 <td>{{ x['UltimoPago'] }}</td>
+                <td>
+                    <a href="/servlet/membresias/delete?id={{x['idMembresias']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                    <a href="/servlet/membresias/update?id={{x['idMembresias']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>  
       </table>
     </div>
 
-    <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/citas/register" method="POST" enctype="multipart/form-data">
+    <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/membresias/register" method="POST" enctype="multipart/form-data">
         <br>
         <div class="form-title">
             <h2>Insertar un nuevo registro</h2>
