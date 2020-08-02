@@ -23,7 +23,10 @@ def tablas(lugar):
     elif lugar == "clientes":
         adminC = adminClientes()
         clientes = adminC.getAllClientes()
-        return render_template('clientes.html', imagenes = images, clientes = clientes)
+        adminO = adminOpciones()
+        municipios = adminO.getMunicipios()
+        departamentos = adminO.getDepartamentos()
+        return render_template('clientes.html', imagenes = images, clientes = clientes, municipios = municipios, departamentos = departamentos)
     elif lugar == "trabajadores":
         return render_template('trabajadores.html', imagenes = images)
     elif lugar == "tarjetas":
@@ -97,15 +100,21 @@ def editClientes(tipo):
     elif tipo == "delete":
         idDel = request.args.get('id')
         print(idDel)
-        adminC.deleteCliente(idDel)
-        return redirect("/tablas/clientes")
+        valor = adminC.deleteCliente(idDel)
+        if valor:
+            return redirect("/tablas/clientes")
+        else:
+            admin = adminAdministrador()
+            images = admin.getImages()
+            error = "El cliente tiene tiene una cita, así que no puedes borrar su registro. Intenta borrar la cita primero."
+            return render_template("error.html", error = error, imagenes = images)
     elif tipo == "update":
         idUp = request.args.get('id')
         cliente = adminC.getClienteById(idUp)
         imagenes = adminC.getImages()
         return render_template("editClientes.html", cliente = cliente, imagenes = imagenes)
     elif tipo == "updateWD":
-        idUp = request.args.get('id')
+        idUp = request.form.get('id')
         dui = request.form.get('dui')
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')
@@ -122,7 +131,7 @@ def editClientes(tipo):
         idUp = request.form.get('id')
         picture = request.files['imagen']
         foto = picture.read()
-        admin.updateAdminPicture(idup, foto)
+        adminC.updateClientePicture(idUp, foto)
         return redirect("/tablas/administradores")
 
     else:
@@ -145,12 +154,12 @@ def editCitas(tipo):
             "Confirmacion": request.form.get('Confirmacion'),
             "Finalizada": request.form.get('Finalizada')
             }
-        success = administrarCitas.insertCita(data)
+        administrarCitas.insertCita(data)
         return redirect("/tablas/citas")
 
     elif tipo == "delete":
         idDel = int(request.args.get('id'))
-        delete = administrarCitas.deleteCita(idDel)
+        administrarCitas.deleteCita(idDel)
         return redirect("/tablas/citas")
     
     elif tipo == "update":

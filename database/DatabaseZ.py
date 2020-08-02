@@ -1,4 +1,5 @@
 import pymysql
+import sys
 
 class DatabaseZ:
     """ Base de datos MySql
@@ -36,13 +37,17 @@ class DatabaseZ:
             -----
             Debuelve un boolean si las columnas afectadas son más que cero
         """
+
         cursor = self.cursor
         success = False
         if cursor is not None:
-            cursor.execute(sql)
-            self.connection.commit()
-            rows = cursor.rowcount
-            success = rows > 0
+            try:
+                cursor.execute(sql)
+                self.connection.commit()
+                rows = cursor.rowcount
+                success = rows > 0
+            except pymysql.IntegrityError:
+                success = False
         return success
     
     def executeNonQueryRows(self, sql):
