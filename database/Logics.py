@@ -692,7 +692,6 @@ class adminTrabajadores(DatabaseZ):
         success = database.executeNonQueryBool(sql)
         return success
 
-    
     def updateTrabajador( self, idup, dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada ):
         sql = f"""UPDATE `hermes`.`trabajadores` SET `DUI` = %s,`Nombre` = %s, `Apellido` = %s, `Celular` = %s, `Direccion` = %s,`Correo` = %s,`Contrasena` = %s,`Descripcion` = %s,`Departamento` = %s,`Municipio` = %s, `Genero` = %s,`Aceptado` = %s,`fechaDeEntrada` = %s WHERE (`idTrabajadores` = '{idup}');"""
         val = (dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada)
