@@ -136,15 +136,7 @@ class adminAdministrador(DatabaseZ):
             }
         return lista
 
-    def searchWorker(self, word, limit = "20"):
-        """
-        Devuelve una lista con todos los trabajadores relacionados a una palabra
-        ---
-        La palabra se bueca en el dui, el nomre, el apellido, el celular, la dirección, el correo, la descripción o la categoría
-        "limit" ajusta el número de trabajadores devueltos
-        """
-        admin = self.adminTrabajadores
-        lista = admin.fetchAllWorkersByWord(word, limit)
+ 
 
     def revocarLicenciaDeudores(self):
         sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31 and membresias.vigencia = 1;"
@@ -355,6 +347,15 @@ class adminClientes(DatabaseZ):
         database = self.database
         success = database.executeMany(sql, val)
         return success
+
+    def updateClientePicture(self, idcliente, picture):
+        sql = f"""UPDATE `hermes`.`clientes` SET `foto` = %s WHERE (`idClientes` = '{idcliente}');"""
+        
+        database = self.database
+        success = database.executeMany(sql, picture)
+        return success
+
+
 
     def updateusuario(self, datanueva):
         """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
