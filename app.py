@@ -16,6 +16,7 @@ def tablas(lugar):
     admin = adminAdministrador()
     administradorCitas= adminCitas()
     images = admin.getImages()
+    traba= adminTrabajadores()
 
     if lugar == "administradores":
         administradores = admin.getAllAdmins()
@@ -25,7 +26,8 @@ def tablas(lugar):
         clientes = adminC.getAllClientes()
         return render_template('clientes.html', imagenes = images, clientes = clientes)
     elif lugar == "trabajadores":
-        return render_template('trabajadores.html', imagenes = images)
+        trabajadores = traba.getAllTrabajadores()
+        return render_template('trabajadores.html', imagenes = images, trabajadores = trabajadores)
     elif lugar == "tarjetas":
         return render_template('tarjetas.html', imagenes = images)
     elif lugar == "membresias":
@@ -127,6 +129,10 @@ def editClientes(tipo):
 
     else:
         return redirect("/")
+
+#Tabla de trabajadores
+
+
 
 @app.route("/servlet/citas/<tipo>", methods=['POST', 'GET'])
 def editCitas(tipo):

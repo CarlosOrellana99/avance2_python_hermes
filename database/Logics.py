@@ -540,6 +540,35 @@ class adminTrabajadores(DatabaseZ):
             }
         return lista
 
+    def convertTuplaToList(self, tupla, picture = True):
+        lista = {}
+        if picture:
+            foto= b64encode(tupla[12]).decode("utf-8")
+        else:
+            foto= None
+
+        if tupla is not None:
+            lista = {
+                "id": tupla[0],
+                "dui": tupla[1],
+                "nombre": tupla[2],
+                "apellido": tupla[3],
+                "telefono": tupla[4],
+                "direccion": tupla[5],
+                "correo": tupla[6], 
+                "contra": tupla[7],
+                "descripcion": tupla[8],
+                "departamento": tupla[9],
+                "municipio": tupla[10],  
+                "genero": tupla[11],
+                "foto":  foto,
+                "aceptado": tupla[13],
+                "membresia": tupla[14], 
+                "trabajos": tupla[15],
+                "fechaI":tupla[16]
+            }
+        return lista
+
     def getCategoriasById(self, idTrabajador):
         """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
         sql = f"""SELECT categoria.nombre FROM hermes.categorias
@@ -613,6 +642,19 @@ class adminTrabajadores(DatabaseZ):
         "terceraParte": membresia[8:12] 
         }
         return dicc
+
+    def getAllTrabajadores(self):
+        """Devuelve una lista de diccionarios con todos los trabajadores"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.trabajadores;"
+        data = database.executeQuery(sql)
+        lista = {}
+        final = []
+        if len(data) > 0:
+            for x in data:
+                lista = self.convertTuplaToList(x, True)
+                final.append(lista)
+        return final
 
 class adminCategorias(DatabaseZ):
     
@@ -831,4 +873,3 @@ class adminCitas(DatabaseZ):
                     citaspasadas.append(cita)
 
             return citaspendientes,citasnoconfirmadas,citaspasadas
-

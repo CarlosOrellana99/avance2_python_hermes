@@ -1,4 +1,104 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="row justify-content-center ">
+    <div class="col-md-10">
+        <table class="table table-sm table-dark">
+        
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">DUI</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Contraseña</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">Municipio</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Aceptado</th>
+                <th scope="col">Fecha I.</th>
+                <th scope="col">Foto</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in trabajadores %}
+            <tr>
+                <th scope="row">{{ x['id'] }}</th>
+                <td>{{ x['dui'] }}</td>
+                <td>{{ x['nombre'] }}</td>
+                <td>{{ x['apellido'] }}</td>
+                <td>{{ x['telefono'] }}</td>
+                <td>{{ x['direccion'] }}</td>
+                <td>{{ x['correo'] }}</td>
+                <td>{{ x['contra'] }}</td>
+                <td>{{ x['descripcion'] }}</td>
+                <td>{{ x['departamento'] }}</td>
+                <td>{{ x['municipio'] }}</td>
+                <td>{{ x['genero'] }}</td>
+                <td>{{ x['aceptado'] }}</td>
+                <td>{{ x['fechaI'] }}</td>
+                <td><img src="data:;base64,{{ x['foto'] }}" alt="" border=3 height=50 width=50></img></td>
+                <td>
+                    <a href="/servlet/trabajadores/delete?id={{x['id']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                    <a href="/servlet/trabajadores/update?id={{x['id']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                </td>
+            </tr>
+            {% endfor %}
+          
+      </table>
+    </div>
+    <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/admin/register" method="POST" enctype="multipart/form-data">
+        <br>
+        <div class="form-title">
+            <h2>Insertar un nuevo registro</h2>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="apellido">Apellido</label>
+                <input type="text" class="form-control" name="apellido" id="apellido" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="correo">Email</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="password" name="password" required>
+            </div>
+        </div>
+        <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01" required>
+                <label class="custom-file-label" for="imagen">Elija un archivo</label>
+            </div>
+        </div>
+        <script type="application/javascript">
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                $('.custom-file-label').html(fileName);
+            });
+        </script>
+        <button type="submit" class="btn btn-info">Registrar</button>
+        <br><br>
+        
+    </form>
+
+</div>
+
+<br><br>
 
 {% endblock %}

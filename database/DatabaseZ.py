@@ -10,7 +10,7 @@ class DatabaseZ:
         self.params = {
             "host":"localhost",
             "user": "root",
-            "passwd": "12345",
+            "passwd": "root",
             "database": "hermes"
         }
         self.connection = self.createConnection()
