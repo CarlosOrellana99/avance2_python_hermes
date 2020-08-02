@@ -79,6 +79,7 @@ def editAdmin(tipo):
 def editClientes(tipo):
     adminC = adminClientes()
     if tipo == "register":
+        idUp = request.form.get('id')
         dui = request.form.get('dui')
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')

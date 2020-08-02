@@ -262,6 +262,12 @@ class adminClientes(DatabaseZ):
             lista = self.convertTuplaToList(data[0],picture)
         return lista
 
+    def deleteCliente(self, idDel):
+        sql = f"DELETE FROM `hermes`.`clientes` WHERE (`idClientes` = '{idDel}');"
+        database = self.database
+        success = database.executeNonQueryBool(sql)
+        return success
+
     def getAllClientes(self):
             """Debuele una lista de diccionarios con todos los clientes"""
             database = self.database
@@ -287,10 +293,10 @@ class adminClientes(DatabaseZ):
                 "dui": tupla[1],
                 "nombre": tupla[2],
                 "apellido": tupla[3],
-                "telefono": tupla[4],
+                "celular": tupla[4],
                 "direccion": tupla[5],
                 "correo": tupla[6],
-                "contra": tupla[7],
+                "contrasena": tupla[7],
                 "foto": foto,
                 "genero": tupla[11],
                 "departamento": tupla[9],
@@ -321,6 +327,35 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
+    def getImages(self):
+        sql = "SELECT * FROM hermes.imagenes;"
+        data = self.database.executeQuery(sql)
+        dicc = {
+            "logo": b64encode(data[0][1]).decode("utf-8"),
+            "pared": b64encode(data[1][1]).decode("utf-8"),
+            "icono": b64encode(data[2][1]).decode("utf-8"),
+            "logoYnombre": b64encode(data[3][1]).decode("utf-8")
+        }
+        return dicc
+
+    def getClienteById(self, idClientes, picture = True):
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.clientes where clientes.idClientes = '{idClientes}' limit 1;"
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToDicc(data[0], picture)
+        return lista
+
+    def updateCliente(self, idUp, dui, nombre, apellido, celular, direccion, correo, contra, departamento, municipio, genero):  
+        sql = f"""UPDATE `hermes`.`clientes` SET `DUI` = %s, `Nombre` = %s, `Apellido` = %s, `Celular`=%s, `Direccion`=%s, `Correo`=%s ,
+            `Contrasena`=%s , `Departamento`=%s , `Municipio`=%s, `Genero`=%s WHERE (`idClientes` = '{idUp}');"""
+        val = (dui, nombre, apellido, celular, direccion, correo, contra, departamento, municipio, genero)
+        database = self.database
+        success = database.executeMany(sql, val)
+        return success
+
     def updateusuario(self, datanueva):
         """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
         database = self.database
@@ -329,8 +364,8 @@ class adminClientes(DatabaseZ):
             Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
         val = (
             datanueva['dui'],
-             datanueva['nombre'],
-             datanueva['apellido'],
+            datanueva['nombre'],
+            datanueva['apellido'],
             datanueva['telefono'],
             datanueva['direccion'],
             datanueva['correo'],
