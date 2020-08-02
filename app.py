@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas,adminTarjetas
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas, adminMembresia, adminTarjetas
 
 app = Flask(__name__) 
 app.secret_key = "Latrenge3456"
@@ -15,6 +15,7 @@ def index():
 def tablas(lugar): 
     admin = adminAdministrador()
     administradorCitas= adminCitas()
+    adminMembresias = adminMembresia()
     images = admin.getImages()
     traba= adminTrabajadores()
 
@@ -37,7 +38,8 @@ def tablas(lugar):
         idWorkerForCard = adminCard.getIdWorkerForCards()
         return render_template('tarjetas.html', imagenes = images, cards = allCards, idWorker = idWorkerForCard)
     elif lugar == "membresias":
-        return render_template('membresias.html', imagenes = images)
+        membresias = adminMembresias.getAllMembresias()
+        return render_template('membresias.html', imagenes = images, membresias = membresias)
     elif lugar == "citas":
         citas = administradorCitas.getAllCitas()
         idTrabajadores,idClientes = administradorCitas.getidTrabajadoresClientesExistentes()
@@ -193,6 +195,33 @@ def editCitas(tipo):
         update = administrarCitas.updateCitas(data)
         return redirect("/tablas/citas")
 
+@app.route("/servlet/membresias/<tipo>", methods=['POST', 'GET'])
+def editMembresia(tipo):
+    administrarMembresias = adminMembresia()
+
+    if tipo == "register":
+        data = {
+            "Membresia": request.form.get('Membresia'),
+            "Vigencia": request.form.get('Vigencia'),
+            "UltimoPago": request.form.get('UltimoPago')
+            }
+        success = administrarMembresias.insertMembresia(data)
+        return redirect("/tablas/Membresias")
+
+    elif tipo == "delete":
+        idDel = int(request.args.get('idMembresias'))
+        delete = administrarMembresias.deleteMembresia(idDel)
+        return redirect("/tablas/membresias")
+    
+    elif tipo=="update":
+        data = {
+            "idMembresias":request.form.get('idMembresias'),
+            "Membresia": request.form.get('Membresia'),
+            "Vigencia": request.form.get('Vigencia'),
+            "UltimoPago": request.form.get('UltimoPago')
+            }
+        update = administrarMembresias.updateMembresia(data)
+        return redirect("/tablas/membresias")
 
 @app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])
 def editCards(tipo):
