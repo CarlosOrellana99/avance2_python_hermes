@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas, adminMembresia
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas, adminMembresia, adminTarjetas
 
 app = Flask(__name__) 
 app.secret_key = "Latrenge3456"
@@ -17,6 +17,7 @@ def tablas(lugar):
     administradorCitas= adminCitas()
     adminMembresias = adminMembresia()
     images = admin.getImages()
+    traba= adminTrabajadores()
 
     if lugar == "administradores":
         administradores = admin.getAllAdmins()
@@ -24,11 +25,18 @@ def tablas(lugar):
     elif lugar == "clientes":
         adminC = adminClientes()
         clientes = adminC.getAllClientes()
-        return render_template('clientes.html', imagenes = images, clientes = clientes)
+        adminO = adminOpciones()
+        municipios = adminO.getMunicipios()
+        departamentos = adminO.getDepartamentos()
+        return render_template('clientes.html', imagenes = images, clientes = clientes, municipios = municipios, departamentos = departamentos)
     elif lugar == "trabajadores":
-        return render_template('trabajadores.html', imagenes = images)
+        trabajadores = traba.getAllTrabajadores()
+        return render_template('trabajadores.html', imagenes = images, trabajadores = trabajadores)
     elif lugar == "tarjetas":
-        return render_template('tarjetas.html', imagenes = images)
+        adminCard = adminTarjetas()
+        allCards = adminCard.getAllCards()
+        idWorkerForCard = adminCard.getIdWorkerForCards()
+        return render_template('tarjetas.html', imagenes = images, cards = allCards, idWorker = idWorkerForCard)
     elif lugar == "membresias":
         membresias = adminMembresias.getAllMembresias()
         return render_template('membresias.html', imagenes = images, membresias = membresias)
@@ -99,15 +107,21 @@ def editClientes(tipo):
     elif tipo == "delete":
         idDel = request.args.get('id')
         print(idDel)
-        adminC.deleteCliente(idDel)
-        return redirect("/tablas/clientes")
+        valor = adminC.deleteCliente(idDel)
+        if valor:
+            return redirect("/tablas/clientes")
+        else:
+            admin = adminAdministrador()
+            images = admin.getImages()
+            error = "El cliente tiene tiene una cita, así que no puedes borrar su registro. Intenta borrar la cita primero."
+            return render_template("error.html", error = error, imagenes = images)
     elif tipo == "update":
         idUp = request.args.get('id')
         cliente = adminC.getClienteById(idUp)
         imagenes = adminC.getImages()
         return render_template("editClientes.html", cliente = cliente, imagenes = imagenes)
     elif tipo == "updateWD":
-        idUp = request.args.get('id')
+        idUp = request.form.get('id')
         dui = request.form.get('dui')
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')
@@ -124,11 +138,15 @@ def editClientes(tipo):
         idUp = request.form.get('id')
         picture = request.files['imagen']
         foto = picture.read()
-        admin.updateAdminPicture(idup, foto)
+        adminC.updateClientePicture(idUp, foto)
         return redirect("/tablas/administradores")
 
     else:
         return redirect("/")
+
+#Tabla de trabajadores
+
+
 
 @app.route("/servlet/citas/<tipo>", methods=['POST', 'GET'])
 def editCitas(tipo):
@@ -147,12 +165,12 @@ def editCitas(tipo):
             "Confirmacion": request.form.get('Confirmacion'),
             "Finalizada": request.form.get('Finalizada')
             }
-        success = administrarCitas.insertCita(data)
+        administrarCitas.insertCita(data)
         return redirect("/tablas/citas")
 
     elif tipo == "delete":
         idDel = int(request.args.get('id'))
-        delete = administrarCitas.deleteCita(idDel)
+        administrarCitas.deleteCita(idDel)
         return redirect("/tablas/citas")
     
     elif tipo == "update":
@@ -204,6 +222,45 @@ def editMembresia(tipo):
             }
         update = administrarMembresias.updateMembresia(data)
         return redirect("/tablas/membresias")
+
+@app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])
+def editCards(tipo):
+    adminCards = adminTarjetas()
+    admin = adminAdministrador()
+    images = admin.getImages()
+
+    if tipo == "register":
+        data = {
+            "Trabajador": request.form.get('Trabajador'),
+            "Numero": request.form.get('Numero'),
+            "DiaVencimiento": int(request.form.get('DiaVencimiento')),
+            "MesVencimiento": int(request.form.get('MesVencimiento')),
+            "CVV": request.form.get('CVV'),
+            "Tipo": request.form.get('Tipo'),
+            "Titular": request.form.get('Titular'),
+            }
+        adminCards.insertCard(data)
+        return redirect("/tablas/tarjetas")
+
+    elif tipo == "delete":
+        idDel = int(request.args.get('id'))
+        adminCards.deleteCard()
+        return redirect("/tablas/tarjetas")
+    
+    elif tipo=="update":
+        
+        data = {
+            "idTarjetas":request.form.get('id'),
+            "Trabajador": request.form.get('Trabajador'),
+            "Numero": request.form.get('Numero'),
+            "DiaVencimiento": int(request.form.get('DiaVencimiento')),
+            "MesVencimiento": int(request.form.get('MesVencimiento')),
+            "CVV": request.form.get('CVV'),
+            "Tipo": request.form.get('Tipo'),
+            "Titular": request.form.get('Titular'),
+            }
+        update = adminCards.updateCards(data)
+        return redirect("/tablas/tarjetas")
 
 if __name__=='__main__':
     app.run(debug=True)

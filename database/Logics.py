@@ -540,6 +540,35 @@ class adminTrabajadores(DatabaseZ):
             }
         return lista
 
+    def convertTuplaToList(self, tupla, picture = True):
+        lista = {}
+        if picture:
+            foto= b64encode(tupla[12]).decode("utf-8")
+        else:
+            foto= None
+
+        if tupla is not None:
+            lista = {
+                "id": tupla[0],
+                "dui": tupla[1],
+                "nombre": tupla[2],
+                "apellido": tupla[3],
+                "telefono": tupla[4],
+                "direccion": tupla[5],
+                "correo": tupla[6], 
+                "contra": tupla[7],
+                "descripcion": tupla[8],
+                "departamento": tupla[9],
+                "municipio": tupla[10],  
+                "genero": tupla[11],
+                "foto":  foto,
+                "aceptado": tupla[13],
+                "membresia": tupla[14], 
+                "trabajos": tupla[15],
+                "fechaI":tupla[16]
+            }
+        return lista
+
     def getCategoriasById(self, idTrabajador):
         """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
         sql = f"""SELECT categoria.nombre FROM hermes.categorias
@@ -613,6 +642,19 @@ class adminTrabajadores(DatabaseZ):
         "terceraParte": membresia[8:12] 
         }
         return dicc
+
+    def getAllTrabajadores(self):
+        """Devuelve una lista de diccionarios con todos los trabajadores"""
+        database = self.database
+        sql = f"SELECT * FROM hermes.trabajadores;"
+        data = database.executeQuery(sql)
+        lista = {}
+        final = []
+        if len(data) > 0:
+            for x in data:
+                lista = self.convertTuplaToList(x, True)
+                final.append(lista)
+        return final
 
 class adminCategorias(DatabaseZ):
     
@@ -831,7 +873,10 @@ class adminCitas(DatabaseZ):
                 elif cita['Finalizada']=="True":
                     citaspasadas.append(cita)
 
+
             return citaspendientes,citasnoconfirmadas,citaspasadas
+
+
 
 
 class adminMembresia(DatabaseZ):
@@ -882,10 +927,70 @@ class adminMembresia(DatabaseZ):
             datanueva['Membresia'],
             datanueva['Vigencia'],
             datanueva['UltimoPago'],
+
+class adminTarjetas(DatabaseZ):
+    def __init__(self):
+        self.database = DatabaseZ()
+
+    def getAllCards(self):
+        """Retorna una lista de diccionarios con los datos de las citas"""
+        database = self.database
+        sql = "SELECT * FROM hermes.tarjetas;"
+        data = database.executeQuery(sql)
+        allCards = self.diccForCards(data)
+        return allCards
+
+    def diccForCards(self, lista):
+        """Crea una lista de diccionarios de todas las citas"""
+        listafinal=[]
+        if lista is not None:
+            for x in lista:
+                dicc = {
+                    "idTarjetas": x[0],
+                    "Trabajador": x[1],
+                    "Numero": x[2],
+                    "DiaVencimiento":x[3],
+                    "MesVencimiento":x[4],
+                    "CVV":x[5],
+                    "Tipo":x[6],
+                    "Titular":x[7],
+                }
+                listafinal.append(dicc)
+        return listafinal
+
+    
+    def getIdWorkerForCards(self):
+        database = self.database
+        sql = "SELECT idTrabajadores FROM hermes.trabajadores;"
+        idWorkerForCards = database.executeQuery(sql)
+        return idWorkerForCards
+
+    def deleteCard(self,idTarjetas):
+        """Elimina una Cita"""
+        database = self.database
+        sql = f"DELETE FROM `hermes`.`tarjetas` WHERE (`idTarjetas` = {idTarjetas});"
+        success = database.executeNonQueryBool(sql)
+        return success
+
+    def insertCard(self, datanueva):
+        """Agrega una citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """INSERT INTO hermes.tarjetas (`Trabajador`, `Numero`, `DiaVencimiento`, `MesVencimiento`, `CVV`,`Tipo`, `Titular`) 
+                 VALUES ( %s, %s, %s, %s, %s, %s, %s);"""
+        val = (
+            datanueva['Trabajador'],
+            datanueva['Numero'],
+            datanueva['DiaVencimiento'],
+            datanueva['MesVencimiento'],
+            datanueva['CVV'],
+            datanueva['Tipo'],
+            datanueva['Titular']
+
             )
         success = database.executeMany(sql,val)
         return success
 
+<<<<<<< HEAD
     def updateMembresia(self, datanueva):
         """Actualiza la informacion de las membresias y returna True si se realiza correctamente"""
         database = self.database
@@ -912,3 +1017,25 @@ class adminMembresia(DatabaseZ):
         return lista
 
     
+
+    def updateCards(self, datanueva):
+        """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """UPDATE hermes.trabajadores SET
+            Trabajador=%s , Numero=%s, DiaVencimiento=%s, MesVencimiento=%s, CVV=%s, Tipo=%s ,
+            Titular=%s WHERE idTrabajadores=%s;"""
+        val = (
+            datanueva['Trabajador'],
+            datanueva['Numero'],
+            datanueva['DiaVencimiento'],
+            datanueva['MesVencimiento'],
+            datanueva['CVV'],
+            datanueva['Tipo'],
+            datanueva['Titular'],
+            datanueva['idTrabajadores']
+            )
+        success = database.executeMany(sql,val)
+        return success
+
+            return citaspendientes,citasnoconfirmadas,citaspasadas
+
