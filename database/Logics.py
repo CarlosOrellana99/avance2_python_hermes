@@ -871,8 +871,6 @@ class adminCitas(DatabaseZ):
                     citasnoconfirmadas.append(cita)
                 elif cita['Finalizada']=="True":
                     citaspasadas.append(cita)
-
-<<<<<<< HEAD
             return citaspendientes,citasnoconfirmadas,citaspasadas
 
 class adminTarjetas(DatabaseZ):
@@ -954,6 +952,3 @@ class adminTarjetas(DatabaseZ):
             )
         success = database.executeMany(sql,val)
         return success
-=======
-            return citaspendientes,citasnoconfirmadas,citaspasadas
->>>>>>> ee8afd07af5b5b2872ce4989bcc5348c795441e3
