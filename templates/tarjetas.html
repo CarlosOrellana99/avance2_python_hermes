@@ -1,56 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="row justify-content-center ">
     <div class=" col-md-10">
         <table class="table table-sm table-dark">
-        
-        <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Trabajador</th>
-                <th scope="col">Numero</th>
-                <th scope="col">DiaVencimiento</th>
-                <th scope="col">MesVencimiento</th>
-                <th scope="col">CVV</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Titular</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for x in cards %}
-            <tr>
-                <th scope="row">{{ x['idTarjetas'] }}</th>
-                <td>{{ x['Trabajador'] }}</td>
-                <td>{{ x['Numero'] }}</td>
-                <td>{{ x['DiaVencimiento'] }}</td>
-                <td>{{ x['MesVencimiento'] }}</td>
-                <td>{{ x['CVV'] }}</td>
-                <td>{{ x['Tipo'] }}</td>
-                <td>{{ x['Titular'] }}</td>
-                <td>
-                    <a href="/servlet/tarjetas/delete?id={{x['idTarjetas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
-                    <a href="/servlet/tarjetas/update?id={{x['idTarjetas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
-                </td>
-            </tr>
-            {% endfor %}
-          
-      </table>
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Trabajador</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">DiaVencimiento</th>
+                    <th scope="col">MesVencimiento</th>
+                    <th scope="col">CVV</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Titular</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for x in cards %}
+                <tr>
+                    <th scope="row">{{ x['idTarjetas'] }}</th>
+                    <td>{{ x['Trabajador'] }}</td>
+                    <td>{{ x['Numero'] }}</td>
+                    <td>{{ x['DiaVencimiento'] }}</td>
+                    <td>{{ x['MesVencimiento'] }}</td>
+                    <td>{{ x['CVV'] }}</td>
+                    <td>{{ x['Tipo'] }}</td>
+                    <td>{{ x['Titular'] }}</td>
+                    <td>
+                        <a href="/servlet/tarjetas/delete?id={{x['idTarjetas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/delete.png"/></a>
+                        <a href="/servlet/tarjetas/update?id={{x['idTarjetas']}}"><img src="https://img.icons8.com/ultraviolet/25/000000/pencil.png"/></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>  
+        </table>
     </div>
     <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/tarjetas/register" method="POST" enctype="multipart/form-data">
         <br>
         <div class="form-title">
             <h2>Insertar un nuevo registro</h2>
-
-            <div class="form-group col-md-6">
-                <label for="Trabajador">IdTrabajador</label>
+            <div class="form-group col-md-5">
+                <label for="Trabajador">Trabajador</label>
                 <select name="Trabajador" id="Trabajador">
                 {% for ids in idWorker %}
                     <option value="{{ids[0]}}">{{ids[0]}}</option>
                 {% endfor %}
                 </select>   
-            </div>     
-            <div>       
+            </div> 
             <div class="form-group col-md-6">
                 <label for="Hora">Numero</label>
                 <input type="text" class="form-control" name="Numero" id="Numero" required>
@@ -76,14 +73,14 @@
                 <input type="text" class="form-control" id="Titular" name="Titular" required>
             </div>
            
-        <button type="submit" class="btn btn-info">Registrar</button>
-        <br><br>
-        
+            <button type="submit" class="btn btn-info">Registrar</button><br><br>
+        </div>
     </form>
-
 </div>
 
-<br><br>
 
+<br><br>
+<br><br>
+<br><br>
 
 {% endblock %}

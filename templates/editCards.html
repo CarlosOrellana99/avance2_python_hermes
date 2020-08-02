@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center ">
+    <div class=" col-md-10">
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/tarjetas/updateCard" method="POST" enctype="multipart/form-data">
+            <br>
+            <div class="form-title">
+                <h2>Actualizar registro</h2>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Trabajador">Trabajador</label>
+                    <select name="Trabajador" id="Trabajador">
+                    {% for idst in idWorker %}
+                        {% if idst[0] == registro['Trabajador'] %}
+                        <option value="{{idst[0]}}" selected>{{idst[0]}}</option>
+                        {% else%}
+                        <option value="{{idst[0]}}">{{idst[0]}}</option>
+                        {% endif%}
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                
+                <div class="form-group col-md-6">
+                    <label for="Hora">Numero</label>
+                    <input type="text" class="form-control" name="Numero" id="Numero" value ="{{registro['Numero']}}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Descripcion">DiaVencimiento</label>
+                    <input type="text" class="form-control" id="DiaVencimiento" name="DiaVencimiento" value ="{{registro['DiaVencimiento']}}"required>
+                </div>
+            </div>  
+            <div class="form-group col-md-6">
+                <label for="Fecha">MesVencimiento</label>
+                <input type="text" class="form-control" id="MesVencimiento" name="MesVencimiento" value ="{{registro['MesVencimiento']}}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Fecha">CVV</label>
+                <input type="text" class="form-control" id="CVV" name="CVV" value ="{{registro['CVV']}}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Fecha">Tipo</label>
+                <input type="text" class="form-control" id="Tipo" name="Tipo" value ="{{registro['Tipo']}}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="Fecha">Titular</label>
+                <input type="text" class="form-control" id="Titular" name="Titular" value ="{{registro['Titular']}}" required>
+            </div>    
+            <button type="submit" class="btn btn-info">Actualizar</button>
+            <br><br>
+            <input type="hidden" id="id" name="id" value="{{ registro['idTarjetas'] }}"></input>
+        </form>
+    </div>
+</div>
+{% endblock %}

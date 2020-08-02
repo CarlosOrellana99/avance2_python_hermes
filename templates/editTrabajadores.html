@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row justify-content-center ">
     <div class=" col-md-10">
-        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajadores/update" method="POST" enctype="multipart/form-data">
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajadores/updateWD" method="POST" enctype="multipart/form-data">
             <br>
             <div class="form-title">
                 <h2>Actualizar registro</h2>
@@ -10,27 +10,72 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{administrador['nombre']}}" required>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{trabajador['nombre']}}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" name="apellido" id="apellido" value="{{administrador['apellido']}}" required>
+                    <input type="text" class="form-control" name="apellido" id="apellido" value="{{trabajador['apellido']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="DUI">DUI</label>
+                    <input type="text" class="form-control" name="dui" id="dui" value="{{trabajador['dui']}}" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="correo">Email</label>
-                    <input type="email" class="form-control" id="correo" name="correo" value="{{administrador['correo']}}" required>
+                    <input type="email" class="form-control" id="correo" name="correo" value="{{trabajador['correo']}}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="password">Password</label>
-                    <input type="text" class="form-control" id="password" name="password" value="{{administrador['contra']}}" required>
+                    <input type="text" class="form-control" id="password" name="password" value="{{trabajador['contra']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="celular">Celular</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono" value="{{trabajador['telefono']}}" required>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="direccion">Direccion</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion" value="{{trabajador['direccion']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="descripcion">Descripcion</label>
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{trabajador['descripcion']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="genero">Genero</label>
+                    <input type="text" class="form-control" id="genero" name="genero" value="{{trabajador['genero']}}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="departamento">Departamento</label>
+                    <input type="text" class="form-control" id="departamento" name="departamento" value="{{trabajador['departamento']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="municipio">Municipio</label>
+                    <input type="text" class="form-control" id="municipio" name="municipio" value="{{trabajador['municipio']}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="aceptado">Aceptado</label>
+                    <input type="text" class="form-control" id="aceptado" name="aceptado" value="{{trabajador['aceptado']}}" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fecha">Fecha de entrada</label>
+                    <input type="text" class="form-control" id="fechaDeEntrada" name="fechaDeEntrada" value="{{trabajador['fechaDeEntrada']}}" required>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-info">Cambiar datos</button>
-            <input type="hidden" id="id" name="id" value="{{ administrador['id'] }}"></input>
+            <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
         </form>
-        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/admin/updateWP" method="POST" enctype="multipart/form-data">
+
+
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajador/updateWP" method="POST" enctype="multipart/form-data">
             <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -49,7 +94,7 @@
             </script>
             <button type="submit" class="btn btn-info">Cambiar Foto</button>
             <br><br>
-            <input type="hidden" id="id" name="id" value="{{ administrador['id'] }}"></input>
+            <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
         </form>
     </div>
 </div>
