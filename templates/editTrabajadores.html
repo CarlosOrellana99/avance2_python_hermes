@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="DUI">DUI</label>
-                    <input type="text" class="form-control" name="DUI id="DUI" value="{{trabajador['dui']}}" required>
+                    <input type="text" class="form-control" name="dui" id="dui" value="{{trabajador['dui']}}" required>
                 </div>
             </div>
             <div class="form-row">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="celular">Celular</label>
-                    <input type="text" class="form-control" id="celular" name="celular" value="{{trabajador['telefono']}}" required>
+                    <input type="text" class="form-control" id="telefono" name="telefono" value="{{trabajador['telefono']}}" required>
                 </div>
             </div>
             <div class="form-row">
@@ -73,6 +73,8 @@
             <button type="submit" class="btn btn-info">Cambiar datos</button>
             <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
         </form>
+
+
         <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajador/updateWP" method="POST" enctype="multipart/form-data">
             <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
             <div class="input-group mb-3">

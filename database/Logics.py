@@ -686,8 +686,8 @@ class adminTrabajadores(DatabaseZ):
         return success
 
     
-    def updateTrabajador( self, dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada ):
-        sql = f"""UPDATE `hermes`.`trabajadores` SET `DUI` = %s,`Nombre` = %s, `Apellido` = %s, `Celular` = %s, `Direccion` = %s,`Correo` = %s,`Contrasena` = %s,`Descripcion` = %s,`Departamento` = %s,`Municipio` = %s, `Genero` = %s,`Aceptado` = %s,`trabajos` = %s,`fechaDeEntrada` = %s WHERE (`idTrabajadores` = '{idup}');"""
+    def updateTrabajador( self, idup, dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada ):
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `DUI` = %s,`Nombre` = %s, `Apellido` = %s, `Celular` = %s, `Direccion` = %s,`Correo` = %s,`Contrasena` = %s,`Descripcion` = %s,`Departamento` = %s,`Municipio` = %s, `Genero` = %s,`Aceptado` = %s,`fechaDeEntrada` = %s WHERE (`idTrabajadores` = '{idup}');"""
         val = (dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada)
         database = self.database
         success = database.executeMany(sql, val)

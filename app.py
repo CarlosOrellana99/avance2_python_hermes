@@ -179,12 +179,22 @@ def editTrabajadores(tipo):
         return render_template("editTrabajadores.html", trabajador = trabajador, imagenes = imagenes)
     elif tipo == "updateWD":
         idup = request.form.get('id')
+        dui = request.form.get('dui')
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')
+        celular = request.form.get('telefono')
+        direccion = request.form.get('direccion')
         correo = request.form.get('correo')
         contra = request.form.get('password')
-        adminT.updateTrabajador(idup, nombre, apellido, correo, contra)
+        descripcion = request.form.get('descripcion')
+        departamento = request.form.get('departamento')
+        municipio = request.form.get('municipio')
+        genero = request.form.get('genero')
+        aceptado = request.form.get('aceptado')
+        fechaDeEntrada = request.form.get('fechaDeEntrada')
+        adminT.updateTrabajador(idup, dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, fechaDeEntrada)
         return redirect("/tablas/trabajadores")
+
     elif tipo == "updateWP":
         idup = request.form.get('id')
         picture = request.files['imagen']
