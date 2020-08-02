@@ -306,6 +306,13 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
+    def updateClientePicture(self, idcliente, picture):
+        sql = f"""UPDATE `hermes`.`clientes` SET `foto` = %s WHERE (`idClientes` = '{idcliente}');"""
+        
+        database = self.database
+        success = database.executeMany(sql, picture)
+        return success
+
     def convertTuplaToList(self, tupla, picture = True):
         if picture:
             foto = b64encode(tupla[8]).decode("utf-8")
@@ -917,6 +924,7 @@ class adminCitas(DatabaseZ):
                     citasnoconfirmadas.append(cita)
                 elif cita['Finalizada']=="True":
                     citaspasadas.append(cita)
+        return citaspendientes,citasnoconfirmadas,citaspasadas
 
 
 
