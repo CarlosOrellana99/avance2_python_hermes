@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas,adminTarjetas
 
 app = Flask(__name__) 
 app.secret_key = "Latrenge3456"
@@ -30,7 +30,10 @@ def tablas(lugar):
     elif lugar == "trabajadores":
         return render_template('trabajadores.html', imagenes = images)
     elif lugar == "tarjetas":
-        return render_template('tarjetas.html', imagenes = images)
+        adminCard = adminTarjetas()
+        allCards = adminCard.getAllCards()
+        idWorkerForCard = adminCard.getIdWorkerForCards()
+        return render_template('tarjetas.html', imagenes = images, cards = allCards, idWorker = idWorkerForCard)
     elif lugar == "membresias":
         return render_template('membresias.html', imagenes = images)
     elif lugar == "citas":
@@ -183,6 +186,46 @@ def editCitas(tipo):
             }
         update = administrarCitas.updateCitas(data)
         return redirect("/tablas/citas")
+
+
+@app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])
+def editCards(tipo):
+    adminCards = adminTarjetas()
+    admin = adminAdministrador()
+    images = admin.getImages()
+
+    if tipo == "register":
+        data = {
+            "Trabajador": request.form.get('Trabajador'),
+            "Numero": request.form.get('Numero'),
+            "DiaVencimiento": int(request.form.get('DiaVencimiento')),
+            "MesVencimiento": int(request.form.get('MesVencimiento')),
+            "CVV": request.form.get('CVV'),
+            "Tipo": request.form.get('Tipo'),
+            "Titular": request.form.get('Titular'),
+            }
+        adminCards.insertCard(data)
+        return redirect("/tablas/tarjetas")
+
+    elif tipo == "delete":
+        idDel = int(request.args.get('id'))
+        adminCards.deleteCard()
+        return redirect("/tablas/tarjetas")
+    
+    elif tipo=="update":
+        
+        data = {
+            "idTarjetas":request.form.get('id'),
+            "Trabajador": request.form.get('Trabajador'),
+            "Numero": request.form.get('Numero'),
+            "DiaVencimiento": int(request.form.get('DiaVencimiento')),
+            "MesVencimiento": int(request.form.get('MesVencimiento')),
+            "CVV": request.form.get('CVV'),
+            "Tipo": request.form.get('Tipo'),
+            "Titular": request.form.get('Titular'),
+            }
+        update = adminCards.updateCards(data)
+        return redirect("/tablas/tarjetas")
 
 if __name__=='__main__':
     app.run(debug=True)
