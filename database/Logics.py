@@ -952,6 +952,25 @@ class adminTarjetas(DatabaseZ):
         allCards = self.diccForCards(data)
         return allCards
 
+    def getCardById(self,idCard):
+        """Busca una cita por su id y la regersa como diccionario"""
+        database = self.database
+        sql = f"""SELECT * FROM hermes.tarjetas WHERE idTarjetas = '{idCard}';"""
+        data = database.executeQuery(sql)
+        card ={}
+        for x in data:
+            card = {
+                    "idTarjetas": x[0],
+                    "Trabajador": x[1],
+                    "Numero": x[2],
+                    "DiaVencimiento":x[3],
+                    "MesVencimiento":x[4],
+                    "CVV":x[5],
+                    "Tipo":x[6],
+                    "Titular":x[7],
+                        }
+        return card
+
     def diccForCards(self, lista):
         """Crea una lista de diccionarios de todas las citas"""
         listafinal=[]
@@ -1032,9 +1051,9 @@ class adminTarjetas(DatabaseZ):
     def updateCards(self, datanueva):
         """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
         database = self.database
-        sql = """UPDATE hermes.trabajadores SET
+        sql = """UPDATE hermes.tarjetas SET
             Trabajador=%s , Numero=%s, DiaVencimiento=%s, MesVencimiento=%s, CVV=%s, Tipo=%s ,
-            Titular=%s WHERE idTrabajadores=%s;"""
+            Titular=%s WHERE idTarjetas=%s;"""
         val = (
             datanueva['Trabajador'],
             datanueva['Numero'],

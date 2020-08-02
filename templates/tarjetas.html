@@ -43,7 +43,7 @@
             <h2>Insertar un nuevo registro</h2>
 
             <div class="form-group col-md-6">
-                <label for="Trabajador">IdTrabajador</label>
+                <label for="Trabajador">Trabajador</label>
                 <select name="Trabajador" id="Trabajador">
                 {% for ids in idWorker %}
                     <option value="{{ids[0]}}">{{ids[0]}}</option>
@@ -84,6 +84,5 @@
 </div>
 
 <br><br>
-
 
 {% endblock %}
