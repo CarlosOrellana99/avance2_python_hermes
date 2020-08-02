@@ -791,6 +791,7 @@ class adminCitas(DatabaseZ):
                 }
                 listafinal.append(dicc)
         return listafinal
+
     def creardiccsCitasClientes(self, lista):
         """Crea una lista de diccionarios de las citas del cliente"""
         listafinal=[]
@@ -832,3 +833,82 @@ class adminCitas(DatabaseZ):
 
             return citaspendientes,citasnoconfirmadas,citaspasadas
 
+
+class adminMembresia(DatabaseZ):
+    def __init__(self):
+        self.database = DatabaseZ()
+
+    def getAllMembresias(self):
+        """Retorna una lista de diccionarios con los datos de las Membresias"""
+        database = self.database
+        sql = "SELECT * FROM hermes.membresias;"
+        data = database.executeQuery(sql)
+        lista = {}
+        final = []
+        if len(data) > 0:
+            for x in data:
+                lista = self.convertTuplaToList(x)
+                final.append(lista)
+        return final
+    
+    def getMembresiaById(self,idMembresias):
+        """Busca una Membresia por su id y la regersa como diccionario"""
+        database = self.database
+        sql = f"""SELECT * FROM hermes.membresias WHERE idMembresias = '{idMembresias}';"""
+        data = database.executeQuery(sql)
+        membresiaBuscada ={}
+        for x in data:
+            membresiaBuscada = {
+                    "idMembresias": x[0],
+                    "Membresia": x[1],
+                    "Vigencia": x[2],
+                    "UltimoPago":x[3]
+            }
+        return membresiaBuscada
+    
+    def deleteMembresia(self,idMembresias):
+        """Elimina una Membresia"""
+        database = self.database
+        sql = f"DELETE FROM `hermes`.`membresias` WHERE (`idMembresias` = {idMembresias});"
+        success = database.executeNonQueryBool(sql)
+        return success
+
+    def insertMembresia(self, datanueva):
+        """Agrega una membresia y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """INSERT INTO hermes.membresias (`Membresia`, `Vigencia`, `UltimoPago`) 
+                 VALUES ( %s, %s, %s);"""
+        val = (
+            datanueva['Membresia'],
+            datanueva['Vigencia'],
+            datanueva['UltimoPago'],
+            )
+        success = database.executeMany(sql,val)
+        return success
+
+    def updateMembresia(self, datanueva):
+        """Actualiza la informacion de las membresias y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """UPDATE hermes.membresias SET
+            Membresia=%s , Vigencia=%s, UltimoPago=%s;"""
+        val = (
+            datanueva['Membresia'],
+            datanueva['Vigencia'],
+            datanueva['UltimoPago'],
+            )
+        success = database.executeMany(sql,val)
+        return success
+
+
+    def convertTuplaToList(self, tupla):
+        lista = {}
+        if tupla is not None:
+            lista = {
+                "idMembresias": tupla[0],
+                "Membresia": tupla[1],
+                "Vigencia": tupla[2],
+                "UltimoPago": tupla[3],
+            }
+        return lista
+
+    
