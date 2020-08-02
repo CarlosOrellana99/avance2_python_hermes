@@ -215,7 +215,7 @@ def editCards(tipo):
 
     elif tipo == "delete":
         idDel = int(request.args.get('id'))
-        adminCards.deleteCard()
+        adminCards.deleteCard(idDel)
         return redirect("/tablas/tarjetas")
     
     elif tipo=="update":
@@ -224,8 +224,8 @@ def editCards(tipo):
             "idTarjetas":request.form.get('id'),
             "Trabajador": request.form.get('Trabajador'),
             "Numero": request.form.get('Numero'),
-            "DiaVencimiento": int(request.form.get('DiaVencimiento')),
-            "MesVencimiento": int(request.form.get('MesVencimiento')),
+            "DiaVencimiento": request.form.get('DiaVencimiento'),
+            "MesVencimiento": request.form.get('MesVencimiento'),
             "CVV": request.form.get('CVV'),
             "Tipo": request.form.get('Tipo'),
             "Titular": request.form.get('Titular'),
