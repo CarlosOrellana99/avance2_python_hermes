@@ -295,8 +295,14 @@ def editCards(tipo):
         idDel = int(request.args.get('id'))
         adminCards.deleteCard(idDel)
         return redirect("/tablas/tarjetas")
+
+    elif tipo == "update":
+        idUp = int(request.args.get('id'))
+        registro = adminCards.getCardById(idUp)
+        idWorker= adminCards.getIdWorkerForCards()
+        return render_template("editCards.html", registro = registro , idUp = idUp, idWorker= idWorker, imagenes = images)
     
-    elif tipo=="update":
+    elif tipo=="updateCard":
         
         data = {
             "idTarjetas":request.form.get('id'),
