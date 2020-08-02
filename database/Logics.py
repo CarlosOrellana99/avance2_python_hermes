@@ -926,7 +926,23 @@ class adminMembresia(DatabaseZ):
         val = (
             datanueva['Membresia'],
             datanueva['Vigencia'],
-            datanueva['UltimoPago'],
+            datanueva['UltimoPago']
+        )
+        success = database.executeMany(sql,val)
+        return success
+
+
+    def convertTuplaToList(self, tupla):
+        lista = {}
+        if tupla is not None:
+            lista = {
+                "idMembresias": tupla[0],
+                "Membresia": tupla[1],
+                "Vigencia": tupla[2],
+                "Ultimopago": tupla[3],
+            }
+        return lista
+
 
 class adminTarjetas(DatabaseZ):
     def __init__(self):
@@ -990,7 +1006,6 @@ class adminTarjetas(DatabaseZ):
         success = database.executeMany(sql,val)
         return success
 
-<<<<<<< HEAD
     def updateMembresia(self, datanueva):
         """Actualiza la informacion de las membresias y returna True si se realiza correctamente"""
         database = self.database
@@ -1037,5 +1052,5 @@ class adminTarjetas(DatabaseZ):
         success = database.executeMany(sql,val)
         return success
 
-            return citaspendientes,citasnoconfirmadas,citaspasadas
+            
 
