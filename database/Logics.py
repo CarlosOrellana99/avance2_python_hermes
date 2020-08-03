@@ -412,9 +412,7 @@ class adminTrabajadores(DatabaseZ):
         self.database = DatabaseZ()
 
     def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
-        """ Inserta los componentes de un cliente en la base de datos
-        -------
-        Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
+
         success = False
         fecha = date.today()
         fechaF = fecha.strftime("%d-%m-%Y")
@@ -426,7 +424,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"""
             val = (
                 dui,
                 nombre,
