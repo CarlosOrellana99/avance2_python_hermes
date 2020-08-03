@@ -412,12 +412,10 @@ class adminTrabajadores(DatabaseZ):
         self.database = DatabaseZ()
 
     def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
-        """ Inserta los componentes de un cliente en la base de datos
-        -------
-        Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
+
         success = False
         fecha = date.today()
-        fechaF = fecha.strftime("%d-%m-%Y")
+        fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
@@ -426,7 +424,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s  );"""
             val = (
                 dui,
                 nombre,
@@ -948,7 +946,7 @@ class adminMembresia(DatabaseZ):
     def getMembresiaById(self,idMembresias):
         """Busca una Membresia por su id y la regersa como diccionario"""
         database = self.database
-        sql = f"""SELECT * FROM hermes.membresias WHERE idMembresias = '{idMembresias}';"""
+        sql = f"""SELECT * FROM hermes.membresias WHERE idMembresias = {idMembresias};"""
         data = database.executeQuery(sql)
         membresiaBuscada ={}
         for x in data:
@@ -991,17 +989,21 @@ class adminMembresia(DatabaseZ):
         }
         return dicc
 
-    def updateMembresia(self, idup, Membresia, Vigencia, UltimoPago):
-        sql = f"""UPDATE `hermes`.`membresias` 
-        SET `Membresia` = %s,
-         `Vigencia` = %s,
-          `UltimoPago` = %s
-           WHERE (`idMembresias` = '{idup}');"""
-        val = (Membresia, Vigencia, UltimoPago)
+    def updateMembresia(self, datanueva):
+        """Actualiza la informacion de las membresias y returna True si se realiza correctamente"""
         database = self.database
+        sql = """UPDATE hermes.membresias SET
+            Membresia=%s , Vigencia=%s, UltimoPago=%s
+            WHERE idMembresias=%s;"""
+        val = (
+            datanueva['Membresia'],
+            datanueva['Vigencia'],
+            datanueva['UltimoPago'],
+            datanueva['idMembresias']
+            )
+
         success = database.executeMany(sql, val)
         return success
-
 
     def convertTuplaToList(self, tupla):
         lista = {}
@@ -1096,16 +1098,7 @@ class adminTarjetas(DatabaseZ):
         success = database.executeMany(sql,val)
         return success
 
-    def updateMembresia(self, datanueva):
-        """Actualiza la informacion de las membresias y returna True si se realiza correctamente"""
-        database = self.database
-        sql = """UPDATE hermes.membresias SET
-            Membresia=%s , Vigencia=%s, UltimoPago=%s;"""
-        val = (
-            datanueva['Membresia'],
-            datanueva['Vigencia'],
-            datanueva['UltimoPago'],
-            )
+    
         success = database.executeMany(sql,val)
         return success
 

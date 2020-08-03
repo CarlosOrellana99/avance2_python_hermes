@@ -153,16 +153,16 @@ def editTrabajadores(tipo):
         dui = request.form.get('dui')
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')
-        celular = request.form.get('celular')
+        celular = request.form.get('telefono')
         direccion = request.form.get('direccion')
         correo = request.form.get('correo')
-        contra = request.form.get('contra')
+        contra = request.form.get('password')
         descripcion = request.form.get('descripcion')
-        departamento = request.form.get('departamento')
-        municipio= request.form.get('municipio')
+        departamento = int(request.form.get('departamento'))
+        municipio = int(request.form.get('municipio'))
         genero = request.form.get('genero')
-        aceptado = request.form.get('aceptado')
-        membresia="AAAA-0000-0000"
+        aceptado = 0
+        membresia= 1
         imagen = request.files['imagen']
         foto = imagen.read()
         adminT.insert(dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, membresia, foto)
@@ -277,11 +277,14 @@ def editMembresia(tipo):
         images = administrarMembresias.getImages()
         return render_template("editMembresia.html", membresia = membresia, imagenes = images)
     elif tipo == "updateM":
-        idup = request.form.get('id')
-        Membresia = request.form.get('Membresia')
-        Vigencia = request.form.get('Vigencia')
-        UltimoPago = request.form.get('UltimoPago')
-        administrarMembresias.updateMembresia(idup, Membresia, Vigencia, UltimoPago)
+        data = {
+            "idMembresias":request.form.get('id'),
+            "Membresia": request.form.get('Membresia'),
+            "Vigencia": request.form.get('Vigencia'),
+            "UltimoPago": request.form.get('UltimoPago')
+        }
+        
+        administrarMembresias.updateMembresia(data)
         return redirect("/tablas/membresias")
 
 @app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])
