@@ -169,7 +169,6 @@ def editTrabajadores(tipo):
         return redirect("/tablas/trabajadores")
     elif tipo == "delete":
         idDel = request.args.get('id')
-        print(idDel)
         adminT.deleteTrabajador(idDel)
         return redirect("/tablas/trabajadores")
     elif tipo == "update":

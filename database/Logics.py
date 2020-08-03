@@ -686,9 +686,10 @@ class adminTrabajadores(DatabaseZ):
         }
         return dicc
 
-    def deleteTrabajador(self, idDel):
-        sql = f"DELETE FROM `hermes`.`trabajadores` WHERE (`idTrabajadores` = '{idDel}');"
+    def deleteTrabajador(self,idDel):
+        """Elimina un trabajador"""
         database = self.database
+        sql = f"""DELETE FROM `hermes`.`trabajadores` WHERE (`idTrabajadores` = {idDel});"""
         success = database.executeNonQueryBool(sql)
         return success
 
