@@ -158,11 +158,11 @@ def editTrabajadores(tipo):
         correo = request.form.get('correo')
         contra = request.form.get('password')
         descripcion = request.form.get('descripcion')
-        departamento = request.form.get('departamento')
-        municipio = request.form.get('municipio')
+        departamento = int(request.form.get('departamento'))
+        municipio = int(request.form.get('municipio'))
         genero = request.form.get('genero')
-        aceptado = 1
-        membresia="AAAA-0000-0000"
+        aceptado = 0
+        membresia= 1
         imagen = request.files['imagen']
         foto = imagen.read()
         adminT.insert(dui, nombre, apellido, celular, direccion, correo, contra, descripcion, departamento, municipio, genero, aceptado, membresia, foto)

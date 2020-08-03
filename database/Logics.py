@@ -415,7 +415,7 @@ class adminTrabajadores(DatabaseZ):
 
         success = False
         fecha = date.today()
-        fechaF = fecha.strftime("%d-%m-%Y")
+        fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
@@ -424,7 +424,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s  );"""
             val = (
                 dui,
                 nombre,
