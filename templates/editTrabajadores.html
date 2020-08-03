@@ -5,18 +5,9 @@
         <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajadores/updateWD" method="POST" enctype="multipart/form-data">
             <br>
             <div class="form-title">
-                <h2>Actualizar registro</h2>
-           a</label>
-                    <input type="text" class="form-control" id="fechaDeEntrada" name="fechaDeEntrada" value="{{trabajador['fechaDeEntrada']}}" required>
-                </div>
+                <h2>Actualizar Registro</h2>
             </div>
-
-            <button type="submit" class="btn btn-info">Cambiar datos</button>
-            <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
-        </form>
-
-
-        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajador/updateWP" method="POST" enctype="multipart/form-data">
+            
             <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
             <div class="input-group mb-3"> </div>
             <div class="form-row">
@@ -58,26 +49,40 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="genero">Genero</label>
-                    <input type="text" class="form-control" id="genero" name="genero" value="{{trabajador['genero']}}" required>
+                    <select type="text" class="form-control" id="genero" name="genero">
+                        <option value="Masculino" {% if trabajador['genero']=="Masculino" %}selected{% endif %}>Masculino</option>
+                        <option value="Femenino" {% if trabajador['genero']=="Femenino" %}selected{% endif %}>Femenino</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-5">
                     <label for="departamento">Departamento</label>
-                    <input type="text" class="form-control" id="departamento" name="departamento" value="{{trabajador['departamento']}}" required>
+                    <select class="form-control" id="departamento" name="departamento" required>
+                        {% for x in departamentos %}<option value="{{x['id']}}" {% if x['id'] == trabajador['departamento'] %} selected {% endif %} >{{x['nombre']}}</option>{% endfor %}
+                    </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-5">
                     <label for="municipio">Municipio</label>
-                    <input type="text" class="form-control" id="municipio" name="municipio" value="{{trabajador['municipio']}}" required>
+                    <select class="form-control" id="municipio" name="municipio" required>
+                        {% for y in municipios %}<option value="{{y['id']}}" {% if y['id'] == trabajador['municipio'] %} selected {% endif %}>{{y['nombre']}}</option>{% endfor %}
+                    </select>
                 </div>
+            
+                
                 <div class="form-group col-md-6">
                     <label for="aceptado">Aceptado</label>
                     <input type="text" class="form-control" id="aceptado" name="aceptado" value="{{trabajador['aceptado']}}" required>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="fecha">Fecha de entrad
+            <button type="submit" class="btn btn-info">Cambiar datos</button>
+            <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
+            <br><br>
+            <input type="hidden" id="id" name="id" value="{{ trabajador['id'] }}"></input>
+        </form>
+        <form class="col-md-9 text-white" style="background-color: #343a40;" action="/servlet/trabajadores/updateWP" method="POST" enctype="multipart/form-data">
+            <label for="imagen" style="font-size:20px;font-style:Perpetua" >Sube una fotografía</label>
+            <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
                 </div>

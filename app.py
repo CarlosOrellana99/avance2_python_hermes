@@ -31,7 +31,10 @@ def tablas(lugar):
         return render_template('clientes.html', imagenes = images, clientes = clientes, municipios = municipios, departamentos = departamentos)
     elif lugar == "trabajadores":
         trabajadores = traba.getAllTrabajadores()
-        return render_template('trabajadores.html', imagenes = images, trabajadores = trabajadores)
+        adminO = adminOpciones()
+        municipios = adminO.getMunicipios()
+        departamentos = adminO.getDepartamentos()
+        return render_template('trabajadores.html', imagenes = images, trabajadores = trabajadores, municipios = municipios, departamentos = departamentos)
     elif lugar == "tarjetas":
         adminCard = adminTarjetas()
         allCards = adminCard.getAllCards()
@@ -119,7 +122,10 @@ def editClientes(tipo):
         idUp = request.args.get('id')
         cliente = adminC.getClienteById(idUp)
         imagenes = adminC.getImages()
-        return render_template("editClientes.html", cliente = cliente, imagenes = imagenes)
+        adminO = adminOpciones()
+        departamentos = adminO.getDepartamentos()
+        municipios = adminO.getMunicipios()
+        return render_template("editClientes.html", cliente = cliente, imagenes = imagenes, departamentos = departamentos, municipios = municipios)
     elif tipo == "updateWD":
         idUp = request.form.get('id')
         dui = request.form.get('dui')
@@ -149,6 +155,8 @@ def editClientes(tipo):
 @app.route("/servlet/trabajadores/<tipo>", methods=['POST', 'GET'])
 def editTrabajadores(tipo):
     adminT = adminTrabajadores()
+    adminA = adminAdministrador()
+    adminO = adminOpciones()
     if tipo == "register":
         dui = request.form.get('dui')
         nombre = request.form.get('nombre')
@@ -169,13 +177,22 @@ def editTrabajadores(tipo):
         return redirect("/tablas/trabajadores")
     elif tipo == "delete":
         idDel = request.args.get('id')
-        adminT.deleteTrabajador(idDel)
-        return redirect("/tablas/trabajadores")
+        success = adminT.deleteTrabajador(idDel)
+        if success:
+            return redirect("/tablas/trabajadores")
+        else:
+            images = adminA.getImages()
+            error = "El trabajador tiene tiene una cita o una tarheta, así que no puedes borrar su registro. Intenta borrar la cita o la tarjeta primero."
+            return render_template("error.html", error = error, imagenes = images)
+
+
     elif tipo == "update":
         idUp = request.args.get('id')
         trabajador = adminT.getTrabajadorById(idUp)
-        imagenes = adminT.getImages
-        return render_template("editTrabajadores.html", trabajador = trabajador, imagenes = imagenes)
+        imagenes = adminA.getImages()
+        departamentos = adminO.getDepartamentos()
+        municipios = adminO.getMunicipios()
+        return render_template("editTrabajadores.html", trabajador = trabajador, imagenes = imagenes, municipios = municipios, departamentos = departamentos)
     elif tipo == "updateWD":
         idup = request.form.get('id')
         dui = request.form.get('dui')
@@ -268,8 +285,14 @@ def editMembresia(tipo):
 
     elif tipo == "delete":
         idDel = int(request.args.get('id'))
-        delete = administrarMembresias.deleteMembresia(idDel)
-        return redirect("/tablas/membresias")
+        success = administrarMembresias.deleteMembresia(idDel)
+        if success:
+            return redirect("/tablas/membresias")
+        else:
+            admin = adminAdministrador()
+            images = admin.getImages()
+            error = "Para poder borrar una membresía, primero debes borrar al trabajador."
+            return render_template("error.html", error = error, imagenes = images)
     
     elif tipo=="update":
         idUp = request.args.get('id')
@@ -308,8 +331,14 @@ def editCards(tipo):
 
     elif tipo == "delete":
         idDel = int(request.args.get('id'))
-        adminCards.deleteCard(idDel)
-        return redirect("/tablas/tarjetas")
+        success = adminCards.deleteCard(idDel)
+        if success:
+            return redirect("/tablas/tarjetas")
+        else:
+            admin = adminAdministrador()
+            images = admin.getImages()
+            error = "Para borrar esta tarjeta, primero debes borrar al trabajador que es dueño de ella."
+            return render_template("error.html", error = error, imagenes = images)
 
     elif tipo == "update":
         idUp = int(request.args.get('id'))

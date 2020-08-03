@@ -424,7 +424,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s  );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (
                 dui,
                 nombre,
@@ -686,7 +686,12 @@ class adminTrabajadores(DatabaseZ):
 
     def deleteTrabajador(self,idDel):
         """Elimina un trabajador"""
+
+
         database = self.database
+        sql = f"DELETE FROM `hermes`.`categoriatrabajadores` WHERE (`Trabajador` = '{idDel}');"
+        success = database.executeNonQueryBool(sql)
+
         sql = f"""DELETE FROM `hermes`.`trabajadores` WHERE (`idTrabajadores` = {idDel});"""
         success = database.executeNonQueryBool(sql)
         return success
