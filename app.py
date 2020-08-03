@@ -278,11 +278,14 @@ def editMembresia(tipo):
         images = administrarMembresias.getImages()
         return render_template("editMembresia.html", membresia = membresia, imagenes = images)
     elif tipo == "updateM":
-        idup = request.form.get('id')
-        Membresia = request.form.get('Membresia')
-        Vigencia = request.form.get('Vigencia')
-        UltimoPago = request.form.get('UltimoPago')
-        administrarMembresias.updateMembresia(idup, Membresia, Vigencia, UltimoPago)
+        data = {
+            "idMembresias":request.form.get('id'),
+            "Membresia": request.form.get('Membresia'),
+            "Vigencia": request.form.get('Vigencia'),
+            "UltimoPago": request.form.get('UltimoPago')
+        }
+        
+        administrarMembresias.updateMembresia(data)
         return redirect("/tablas/membresias")
 
 @app.route("/servlet/tarjetas/<tipo>", methods=['POST', 'GET'])
